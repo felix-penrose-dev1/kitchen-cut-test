@@ -1,0 +1,41 @@
+version: '3.5'
+services:
+  kitchen_cut:
+    build:
+      context: .
+      args:
+        uid: '${UID}'
+    container_name: kitchen_cut
+    environment:
+      - 'APACHE_RUN_USER=#${UID}'
+      - 'APACHE_RUN_GROUP=#${UID}'
+    volumes:
+      - '.:/var/www/html'
+    ports:
+      - '8000:80'
+    networks:
+      backend:
+        aliases:
+          - web
+
+  kitchen_cut_db:
+    image: 'mysql:8.0'
+    command: '--default-authentication-plugin=mysql_native_password'
+    container_name: kitchen_cut_db
+    volumes:
+      - './run/var:/var/lib/mysql'
+    environment:
+      - 'MYSQL_ROOT_PASSWORD=securerootpassword'
+      - 'MYSQL_DATABASE=${DB_DATABASE}'
+      - 'MYSQL_USER=${DB_USERNAME}'
+      - 'MYSQL_PASSWORD=${DB_PASSWORD}'
+    ports:
+      - '3306:3306'
+    networks:
+      backend:
+        aliases:
+          - db
+
+networks:
+  backend:
+    name: kitchen_cut_network
