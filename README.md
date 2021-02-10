@@ -32,3 +32,5 @@ php artisan migrate:fresh --seed
 * database/factories/(InvoiceHeader|InvoiceLine|Location)Factory.php
 * database/seeders/BaseTableSeeder.php
 * app/Models/(InvoiceHeader|InvoiceLine|Location).php
+* app/Http/
+* routes/web.php
