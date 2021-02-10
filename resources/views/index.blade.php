@@ -12,8 +12,8 @@
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
     </head>
-    <body class="antialiased bg-gray-900">
-        <div class="relative flex items-top justify-center min-h-screen text-white sm:items-center sm:pt-0">
+    <body class="container antialiased bg-gray-900 mx-auto p-4">
+        <div class="text-white">
 
             Hello
 

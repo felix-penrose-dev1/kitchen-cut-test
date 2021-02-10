@@ -17,13 +17,14 @@ Good luck :)
 
 ## Set up instructions
 ```
+cp .env.example .env
 composer install
 npm install
 npm run dev
 php artisan key:generate
 docker-compose up --build
 
-php artisan migrate:fresh --seed
+env DB_HOST=127.0.0.1 php artisan migrate:fresh --seed
 ```
 
 ## Reference files for the task

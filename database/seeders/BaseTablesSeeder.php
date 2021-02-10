@@ -16,16 +16,17 @@ class BaseTablesSeeder extends Seeder
      */
     public function run()
     {
-        Location::factory()
-            ->count(15)
-            ->create();
+        // Location::factory()
+        //     ->count(5)
+        //     ->create();
 
-            InvoiceHeader::factory()
-            ->count(15)
-            ->create();
+        // InvoiceHeader::factory()
+        //     ->count(5)
+        //     ->create();
 
+        // with relations this will create n rows for each model above
         InvoiceLine::factory()
-            ->count(50)
+            ->count(5)
             ->create();
     }
 }
