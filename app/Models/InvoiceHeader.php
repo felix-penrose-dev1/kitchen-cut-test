@@ -13,6 +13,8 @@ class InvoiceHeader extends Model
     const STATUS_OPEN = 'open';
     const STATUS_PROCESSED = 'processed';
 
+    public $guarded = [];
+
 
     public function location()
     {
