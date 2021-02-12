@@ -2,18 +2,21 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\DB;
+use App\Models\InvoiceHeader;
 
 class InvoiceService
 {
     public function getInvoices(array $dateRange = null, string $status = null, string $location = null)
     {
-        $invoices = DB::table('invoice_headers')
-            ->join('locations', 'invoice_headers.location_id', '=', 'locations.id')
-            ->select('invoice_headers.id', 'date', 'status', 'locations.name as location');
+        $invoices = InvoiceHeader::with('lines')
+            ->select('invoice_headers.id', 'date', 'status', 'invoice_headers.location_id', 'locations.name as location')
+            ->join('locations', 'invoice_headers.location_id', '=', 'locations.id');
 
-        if ($dateRange) {
-            $invoices->whereBetween('date', [$dateRange[0], $dateRange[1]]);
+        if (!empty($dateRange['from']) || !empty($dateRange['to'])) {
+            $invoices->whereBetween('date', [
+                $dateRange['from'] ?? '1900-01-01',
+                $dateRange['to'] ?? '5000-01-01',
+            ]);
         }
 
         if ($status) {
@@ -21,9 +24,24 @@ class InvoiceService
         }
 
         if ($location) {
-            $invoices->where('location', $location);
+            $invoices->where('location_id', $location);
         }
 
-        return $invoices->get();
+        // loop through and add up the invoice total
+        $invoices = $invoices->get()->map(function ($invoice) {
+
+            $total = 0;
+
+            foreach ($invoice->lines as $line) {
+                $total += $line->value;
+            }
+
+            $invoice->total = $total;
+
+            return $invoice;
+        });
+
+
+        return $invoices;
     }
 }

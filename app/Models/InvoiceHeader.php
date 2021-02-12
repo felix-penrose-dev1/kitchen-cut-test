@@ -12,6 +12,7 @@ class InvoiceHeader extends Model
     const STATUS_DRAFT = 'draft';
     const STATUS_OPEN = 'open';
     const STATUS_PROCESSED = 'processed';
+    const ALL_STATUSES = [self::STATUS_DRAFT, self::STATUS_OPEN, self::STATUS_PROCESSED];
 
     public $guarded = [];
 
