@@ -13,9 +13,10 @@
 
     </head>
     <body class="container antialiased bg-gray-900 mx-auto p-4 flex items-center">
-        <div class="text-white">
+        <div class="text-white grid justify-items-stretch">
 
-            @dump($invoices)
+
+            {{-- @dump($invoices) --}}
 
             <form method="get" action="{{ url('/') }}" class="pb-5 table-auto">
                 <label>
@@ -68,6 +69,9 @@
                 >Submit</button>
             </form>
 
+
+            <h2 class="text-3xl py-3">List of invoices</h2>
+
             <table>
                 <thead>
                     <th>Invoice ID</th>
@@ -83,12 +87,37 @@
                             <td>{{ $invoice->location }}</td>
                             <td>{{ $invoice->date }}</td>
                             <td>{{ $invoice->status }}</td>
-                            <td>{{ number_format($invoice->total ?? null, 2) }}</td>
+                            <td>{{ number_format($invoice->total, 2) }}</td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
 
+
+
+            <h2 class="text-3xl py-3 pt-10">Totals by location</h2>
+
+            @if ($locationByStatusValue)
+                <table>
+                    <thead>
+                        <th>Location</th>
+                        <th>Status</th>
+                        <th>Total Value</th>
+                    </thead>
+                    <tbody>
+                        @foreach ($locationByStatusValue as $status)
+                            <tr>
+                                <td>{{ $status->id }}</td>
+                                <td>{{ $status->name }}</td>
+                                <td>{{ $status->status }}</td>
+                                <td>{{ number_format($status->total, 2) }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @else
+                <h3 class="justify-self-center text-2xl py-3 pt-10">Please choose location above to filter this</h3>
+            @endif
         </div>
     </body>
 </html>

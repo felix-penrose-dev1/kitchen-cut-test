@@ -12,7 +12,7 @@ class InvoiceServiceTest extends TestCase
 {
     use RefreshDatabase;
 
-    public $invoiceService;
+    public invoiceService $invoiceService;
     public $testData = [
         'invoice_headers' => [[
             'location_id' => 1,
@@ -22,6 +22,10 @@ class InvoiceServiceTest extends TestCase
             'location_id' => 1,
             'date' => '2004-01-29',
             'status' => InvoiceHeader::STATUS_OPEN,
+        ],[
+            'location_id' => 1,
+            'date' => '1996-03-02',
+            'status' => InvoiceHeader::STATUS_PROCESSED,
         ],[
             'location_id' => 2,
             'date' => '1996-02-20',
@@ -102,5 +106,16 @@ class InvoiceServiceTest extends TestCase
             $this->assertSame('London', $invoice->location);
             $i++;
         }
+    }
+
+
+    public function test_location_id_will_return_sum_of_invoices()
+    {
+        $locationId = 1;
+        $locationByStatusValue = $this->invoiceService->getTotalForLocation($locationId);
+
+        $this->assertCount(2, $locationByStatusValue);
+        $this->assertSame('50.0', $locationByStatusValue['open']->total);
+        $this->assertSame('12.5', $locationByStatusValue['processed']->total);
     }
 }

@@ -23,15 +23,25 @@ npm install
 npm run dev
 php artisan key:generate
 docker-compose up --build
-
 env DB_HOST=127.0.0.1 php artisan migrate:fresh --seed
+
+# run unit tests
+vendor/bin/phpunit
+
+# visit web page
+http://localhost:8000/
 ```
 
 ## Reference files for the task
 
+* app/Models/(InvoiceHeader|InvoiceLine|Location).php
+* app/Service/InvoiceService.php
+* app/Http/InvoiceController.php
 * database/migrations/2021_02_*
 * database/factories/(InvoiceHeader|InvoiceLine|Location)Factory.php
 * database/seeders/BaseTableSeeder.php
-* app/Models/(InvoiceHeader|InvoiceLine|Location).php
-* app/Http/
+* resources/views/index.blade.php
 * routes/web.php
+* tests/*.php
+* docker-compose.yml
+* Dockerfile

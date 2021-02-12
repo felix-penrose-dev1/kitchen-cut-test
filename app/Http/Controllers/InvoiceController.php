@@ -20,6 +20,11 @@ class InvoiceController extends Controller
         $statuses = InvoiceHeader::ALL_STATUSES;
         $locations = Location::all();
 
-        return view('index', compact('invoices', 'statuses', 'locations'));
+        $locationByStatusValue = null;
+        if ($locationId = $request->get('location')) {
+            $locationByStatusValue = $invoiceService->getTotalForLocation($locationId);
+        }
+
+        return view('index', compact('invoices', 'statuses', 'locations', 'locationByStatusValue'));
     }
 }
